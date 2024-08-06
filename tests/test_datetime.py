@@ -1,39 +1,28 @@
 """Test functions related to simple time conversions.
 """
 from datetime import datetime
+from zoneinfo import ZoneInfo
 
 import pytest
-from pytz import timezone
 
-from blockjuggler import tj_datetime #, org_date
+from blockjuggler import tj_datetime
 
 # Timezone in Prague
-PRAGUE = timezone("Europe/Prague")
+PRAGUE = ZoneInfo("Europe/Prague")
 # UTC
-UTC = timezone("UTC")
+UTC = ZoneInfo("UTC")
 
 
 @pytest.mark.parametrize(
-    "dt, tz, expected", [
-        (datetime(2017, 12, 15, 17, 35, 0, 0, UTC), PRAGUE,
-         "2017-12-15-18:35"),
-        (datetime(2017, 12, 15, 18, 35, 0, 0, UTC), PRAGUE,
-         "2017-12-15-19:35"),
+    "dt, expected", [
+        (datetime(2017, 12, 15, 17, 35, 0, 0, UTC),
+         "2017-12-15-17:35-+0000"),
+        (datetime(2017, 12, 15, 18, 35, 0, 0, UTC),
+         "2017-12-15-18:35-+0000"),
+        (datetime(2017, 12, 15, 18, 35, 0, 0, PRAGUE),
+         "2017-12-15-18:35-+0100"),
     ],
     ids=lambda itm: str(itm))
-def test_tj_datetime(dt, tz, expected):
-    res = tj_datetime(dt, tz)
+def test_tj_datetime(dt, expected):
+    res = tj_datetime(dt)
     assert res == expected
-
-
-# @pytest.mark.parametrize(
-#     "dt, tz, expected", [
-#         (datetime(2017, 12, 15, 17, 35, 0, 0, UTC), PRAGUE,
-#          "<2017-12-15 Fri>"),
-#         (datetime(2017, 12, 15, 18, 35, 0, 0, UTC), PRAGUE,
-#          "<2017-12-15 Fri>"),
-#     ],
-#     ids=lambda itm: str(itm))
-# def test_org_date(dt, tz, expected):
-#     res = org_date(dt, tz)
-#     assert res == expected

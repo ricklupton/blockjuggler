@@ -2,30 +2,19 @@ from __future__ import print_function
 
 import sys
 import traceback
-from datetime import date, datetime, timedelta, time
+from datetime import date, datetime, timedelta, time, timezone
 
 import click
 import recurring_ical_events
 from icalendar import Calendar
-from pytz import all_timezones, timezone, utc
-from tzlocal import get_localzone
 
 MIDNIGHT = time(0, 0, 0)
 
 __version__ = "0.5"
 
 def tj_datetime(dt):
-    '''Timezone aware datetime to YYYY-MM-DD DayofWeek HH:MM str in localtime.
-    '''
+    '''Timezone aware datetime to TJ format with TZ offset.'''
     return dt.strftime("%Y-%m-%d-%H:%M-%z")
-
-
-def org_date(dt, tz):
-    '''Timezone aware date to YYYY-MM-DD DayofWeek in localtime.
-    '''
-    if hasattr(dt, "astimezone"):
-        dt = dt.astimezone(tz)
-    return dt.strftime("<%Y-%m-%d %a>")
 
 
 def event_is_declined(comp, emails):
@@ -68,7 +57,7 @@ class Convertor():
             msg = "Parsing error: {}".format(e)
             raise IcalError(msg)
 
-        now = datetime.now(utc)
+        now = datetime.now(timezone.utc)
         start = (now - timedelta(days=self.days)).replace(hour=0, minute=0, second=0, microsecond=0)
         end = (now + timedelta(days=self.days)).replace(hour=0, minute=0, second=0, microsecond=0)
 
@@ -124,9 +113,9 @@ class Convertor():
                 ev_end = ev_start + duration
 
         if not isinstance(ev_start, datetime):
-            ev_start = datetime.combine(ev_start, time(0, tzinfo=utc))
+            ev_start = datetime.combine(ev_start, time(0, tzinfo=timezone.utc))
         if not isinstance(ev_end, datetime):
-            ev_end = datetime.combine(ev_end, time(0, tzinfo=utc))
+            ev_end = datetime.combine(ev_end, time(0, tzinfo=timezone.utc))
 
         return ev_start, ev_end, summary
 

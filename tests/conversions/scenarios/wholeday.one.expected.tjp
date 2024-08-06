@@ -1,7 +1,7 @@
 supplement resource r3 {
   # Weekly day off
   # 2022-09-06 00:00:00+01:00 - 2022-09-07 00:00:00+01:00
-  leaves project 2022-08-29-00:00-+0000 - 2022-09-06-00:00-+0100
+  leaves project ${projectstart} - 2022-09-06-00:00-+0100
   # Weekly day off
   # 2022-09-13 00:00:00+01:00 - 2022-09-14 00:00:00+01:00
   leaves project 2022-09-07-00:00-+0100 - 2022-09-13-00:00-+0100
@@ -19,5 +19,5 @@ supplement resource r3 {
   # A two day event with time at midnight
   # 2022-09-22 00:00:00+01:00 - 2022-09-24 00:00:00+01:00
   leaves project 2022-09-21-00:00-+0100 - 2022-09-22-00:00-+0100
-  leaves project 2022-09-24-00:00-+0100 - 2022-09-22-00:00-+0000
+  leaves project 2022-09-24-00:00-+0100 - ${projectend}
 }

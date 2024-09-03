@@ -10,7 +10,7 @@ from icalendar import Calendar
 
 MIDNIGHT = time(0, 0, 0)
 
-__version__ = "0.5"
+__version__ = "0.1"
 
 def tj_datetime(dt):
     '''Timezone aware datetime to TJ format with TZ offset.'''
